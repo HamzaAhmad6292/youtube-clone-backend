@@ -1,15 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const videoController = require('../controllers/uploadVideoController');
-const upload=require("../utils/uploadUtils")
-const Video=require("../Models/videoModel")
+// Import required modules
+const upload = require("../utils/uploadUtils");
+const Video = require("../Models/videoModel");
 
-
-router.post("/uploadvideo",
-async (req, res, next) => {
+// Controller function to handle video upload
+const uploadVideo = async (req, res, next) => {
     try {
+        // Handle file upload using multer middleware
         upload.single('video')(req, res, function (err) {
-            console.log(err)
             if (err) {
                 return res.status(400).json({ message: "Error uploading file", error: err });
             }
@@ -22,7 +19,7 @@ async (req, res, next) => {
                 title,
                 description,
                 tags,
-                videoUrl: "1", // Use req.file.path to get the uploaded file path
+                videoUrl: req.file.path, // Use req.file.path to get the uploaded file path
                 thumbnailUrl,
                 uploader
             });
@@ -37,13 +34,11 @@ async (req, res, next) => {
                 });
         });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: "Internal server error", error: error });
     }
-}
+};
 
-
-
-)
-
-module.exports=router
+// Export the controller function
+module.exports = {
+    uploadVideo
+};

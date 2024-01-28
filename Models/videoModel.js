@@ -1,3 +1,5 @@
+// models/Video.js
+
 const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
@@ -39,8 +41,7 @@ const videoSchema = new mongoose.Schema({
     default: Date.now,
   },
   uploader: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    type: String,
     required: true,
   },
 });
