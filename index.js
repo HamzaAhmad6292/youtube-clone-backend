@@ -6,15 +6,11 @@ mongodb();
 
 const videosRoutes = require("./Routes/upload_Video.js");
 const userRoutes = require("./Routes/Create_user");
+const cors = require('cors');
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "http://localhost:3001");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
+
+
+app.use(cors())
 
 app.get("/", (req, res) => {
     res.send("Hamza The Great");
@@ -27,3 +23,4 @@ app.use('/videos', videosRoutes); // Use a prefix for video routes
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
