@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
+
   title: {
     type: String,
     required: true,
@@ -19,6 +20,10 @@ const videoSchema = new mongoose.Schema({
   thumbnailUrl: {
     type: String,
     required: true,
+  },
+  videoLength:{
+    type:Number,
+    required:true
   },
   views: {
     type: Number,
@@ -41,8 +46,8 @@ const videoSchema = new mongoose.Schema({
     default: Date.now,
   },
   uploader: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
 });
 

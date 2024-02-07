@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const Video = require("./videoModel");
 
 const { Schema } = mongoose;
 
@@ -22,6 +23,13 @@ password : {
 date : {
     type: Date,
     default: Date.now()
-}
+},
+videos: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Video'
+}]
+
+
 })
+
 module.exports = mongoose.model("User", User_Schema)
