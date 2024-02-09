@@ -9,6 +9,7 @@ const User = require('../Models/User');
 router.post("/uploadvideo",
 async (req, res, next) => {
     try {
+        
 
             const { title, description, tags, thumbnailUrl, uploader,videoUrl,videoLength } = req.body;
 
@@ -32,25 +33,23 @@ async (req, res, next) => {
                 res.status(201).json(savedVideo); 
             }
             }
-            catch(error){0
+            catch(error){
                 res.status(500).json({ message: "Error saving video to database", error: error });
             }
-
-
-            
-     
-
-
-            res.status(201).json(savedVideo);
-
-
    
         }
      catch (error) {
         console.log(error)
         res.status(500).json({ message: "Internal server error", error: error });
     }
-}
+},
+
+
+
+router.get("/getAll",async(req,res)=>{
+
+    
+})
 
 
 

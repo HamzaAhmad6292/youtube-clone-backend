@@ -46,8 +46,8 @@ const videoSchema = new mongoose.Schema({
     default: Date.now,
   },
   uploader: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+    type: String,
+    required:true,
   },
 });
 
