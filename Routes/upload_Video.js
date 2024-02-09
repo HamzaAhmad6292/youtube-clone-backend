@@ -46,9 +46,33 @@ async (req, res, next) => {
 
 
 
-router.get("/getAll",async(req,res)=>{
+router.get("/getVideos",async(req,res)=>{
 
-    
+    try{
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 20;
+
+    const skip = (page - 1) * pageSize;
+
+    const [videos, totalVideos] = await Promise.all([
+        Video.find().skip(skip).limit(pageSize).exec(),
+        Video.countDocuments() // Get the total count of documents in the Video collection
+    ]);
+    const fetchedVideos=videos.length
+
+    res.json({
+        videos,
+        page,
+        pageSize,
+        totalVideos,
+        fetchedVideos
+    });
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({ error: 'Internal server error' });
+
+    }
 })
 
 
