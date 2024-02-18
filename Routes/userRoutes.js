@@ -46,7 +46,6 @@ router.post("/loginuser", [
   body('email').isEmail(),
   body('password').isLength({ min: 5 })
 ], async (req, res) => {
-  console.log("User SuccessFully loged in ")
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -72,7 +71,17 @@ router.post("/loginuser", [
     };
 
     const authToken = jwt.sign(data, secret);
-    return res.json({ success: true, authToken,userData });
+
+    res.cookie('authToken', authToken, { httpOnly: true, maxAge: 7200000 }); // 2 hours expiration
+    res.cookie('userName', userData.name, { maxAge: 7200000 }); // 2 hours expiration
+    
+    
+
+
+
+    console.log("User SuccessFully loged in ")
+
+    return res.json({ success: true, authToken,userName:userData.name });
   } catch (err) {
     console.log(err);
     res.json({ success: false });

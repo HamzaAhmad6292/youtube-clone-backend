@@ -49,6 +49,8 @@ const videoSchema = new mongoose.Schema({
     type: String,
     required:true,
   },
+  comments:{type:Schema.Types.ObjectId,ref:"Comment"}
+
 });
 
 const Video = mongoose.model('Video', videoSchema);
