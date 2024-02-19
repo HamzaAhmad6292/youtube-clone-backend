@@ -65,10 +65,9 @@ router.post("/loginuser", [
     }
 
     const data = {
-      user: {
         id: userData.id
-      }
-    };
+      
+    };  
 
     const authToken = jwt.sign(data, secret);
 

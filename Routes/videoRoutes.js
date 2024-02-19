@@ -14,7 +14,25 @@ router.get("/getVideos",
    videoController.getVideos
 );
 
-router.post("likeVideo/:id/")
+router.post(":id/like/",verifyToken,
+videoController.likeVideo
+);
+
+router.post(":id/dislike",verifyToken,
+videoController.disLikeVideo
+);
+
+router.post(":id/addView",verifyToken,
+videoController.disLikeVideo
+);
+
+router.get(":id/comments",verifyToken,
+videoController.getComments
+);
+
+router.post(":id/postComment",verifyToken,
+videoController.addComment
+);
 
 
 module.exports=router

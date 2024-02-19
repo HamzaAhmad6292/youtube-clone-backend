@@ -1,6 +1,8 @@
 // Import required modules
 const upload = require("../utils/uploadUtils");
 const Video = require("../Models/videoModel");
+const Comment = require("../Models/commentModel");
+const User = require("../Models/User");
 
 // Controller function to handle video upload
 const uploadVideo = async (req, res, next) => {
@@ -125,9 +127,63 @@ const addView=async(req,res)=>{
     }
 }
 
+const addComment=async(req,res)=>{
+    try{
+        const videoId=req.param.id
+        const text=req.body.text
+        const userId=req.user.id
+        
+        const video=Video.findById(videoId)
+        const user=User.findById(userId)
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (!video) {
+            return res.status(404).json({ message: "Video not found" });
+        }
+
+
+        const comment= await new Comment({
+            text:text,
+            user:user.name,
+            Video:video._id,            
+        })
+        video.comments.push(comment._id)
+        await comment.save();
+        res.json({ message: "Comment added successfully", comment: newComment });
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error", error: error });
+
+    }
+}
+const getComments=async(res,req)=>{
+try{
+    const videoId=req.param.id
+    const video=Video.findById(videoId).populate('comments')
+
+    if (!video){
+        return res.status(404).json({ message: "Video not found" });
+    }
+
+    res.json(video.comments)
+
+}
+catch(error){
+    res.status(500).json({ message: "Internal server error", error: error });
+
+}
+}
+
 // Export the controller function
 module.exports = {
     uploadVideo,
-    getVideos
+    getVideos,
+    likeVideo,
+    disLikeVideo,
+    addView,
+    addComment,
+    getComments,
 };
 
