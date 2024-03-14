@@ -1,6 +1,7 @@
 // models/Video.js
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema; // Add this line to import Schema
 
 const videoSchema = new mongoose.Schema({
 
