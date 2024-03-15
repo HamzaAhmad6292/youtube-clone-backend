@@ -20,7 +20,7 @@ const uploadVideo = async (req, res, next) => {
             uploader,
             videoLength,
         });
-
+            console.log(newVideo)
 
         try{
         const savedVideo=await newVideo.save()
@@ -28,7 +28,11 @@ const uploadVideo = async (req, res, next) => {
         if(user){
             user.videos.push(savedVideo)
             await user.save()
-            res.status(201).json(savedVideo); 
+            res.status(201).json(savedVideo);
+            console.log("video saved successfully") 
+        }
+        else{
+            
         }
         }
         catch(error){
@@ -41,50 +45,54 @@ const uploadVideo = async (req, res, next) => {
 };
 
 
-const getVideos=async (req, res) => {
+const getVideos = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 20;
-        const filter=req.query.filter || null
-        const skip = (page - 1) * pageSize;
-
-        let query = {};
-        let sortOptions = {};
-        sortOptions = { views: -1 };
-
-
-        if (filter) {
-            query.title = { $regex: filter, $options: "i" }; // Case-insensitive search
-        }
-
-
-
-        
-        
-        const videos = await Video.find(query)
-            .skip(skip)
-            .limit(pageSize)
-            .sort(sortOptions)
-            .exec();
-
-
-        const totalVideos = await Video.countDocuments();
-        const fetchedVideos = videos.length;
-        const hasNextPage = (page * pageSize) < totalVideos;
-
-        res.json({
-            videos,
-            page,
-            pageSize,
-            totalVideos,
-            fetchedVideos,
-            hasNextPage,
-        });
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 20;
+      const filter = req.query.filter || null;
+      const skip = (page - 1) * pageSize;
+  
+      let query = {};
+      let sortOptions = {};
+      sortOptions = { views: -1 };
+  
+      if (filter) {
+        query.title = { $regex: filter, $options: "i" }; // Case-insensitive search
+      }
+  
+      let videos = [];
+      let hasNextPage = false;
+  
+      for (let i = 1; i <= page; i++) {
+        const partialVideos = await Video.find(query)
+          .skip((i - 1) * pageSize)
+          .limit(pageSize)
+          .sort(sortOptions)
+          .exec();
+  
+        videos = videos.concat(partialVideos);
+      }
+  
+      const totalVideos = await Video.countDocuments();
+      const fetchedVideos = videos.length;
+  
+      if ((page * pageSize) < totalVideos) {
+        hasNextPage = true;
+      }
+  
+      res.json({
+        videos,
+        page,
+        pageSize,
+        totalVideos,
+        fetchedVideos,
+        hasNextPage,
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-}
+  };
 
 
 const likeVideo=async(req,res)=>{
@@ -115,7 +123,7 @@ const disLikeVideo=async(req,res)=>{
 }
 
 const addView=async(req,res)=>{
-    try{
+    try{    
         const id=req.param.id
 
         const video=Video.findById(id)

@@ -6,7 +6,7 @@ const Video=require("../Models/videoModel");
 const User = require('../Models/User');
 const verifyToken=require("../middlewares/verifyToken")
 
-router.post("/uploadvideo",verifyToken,
+router.post("/uploadvideo",
 videoController.uploadVideo
 )
 

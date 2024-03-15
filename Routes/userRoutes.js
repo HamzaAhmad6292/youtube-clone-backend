@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const secret = "HamzaTheGreat";
 
-router.post("/createuser",
+router.post("/createuser",  
 
   body('email').isEmail(),
   body('name').isLength({ min: 3 }),
@@ -17,7 +17,6 @@ router.post("/createuser",
 
   
   async (req, res) => {
-    console.log("User Created")
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -33,7 +32,7 @@ router.post("/createuser",
         email: req.body.email,
         location: req.body.location
       });
-
+      console.log("User Created")
       res.json({ success: true });
     } catch (err) {
       console.log(err);

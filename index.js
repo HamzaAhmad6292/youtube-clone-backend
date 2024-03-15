@@ -19,8 +19,8 @@ app.get("/", (req, res) => {
 });
 
 app.use(express.json());
-app.use('/users', userRoutes); // Use a prefix for user routes
-app.use('/videos', videosRoutes); // Use a prefix for video routes
+app.use('/users', userRoutes); 
+app.use('/videos', videosRoutes); 
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
