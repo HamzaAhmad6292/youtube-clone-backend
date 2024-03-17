@@ -34,5 +34,9 @@ router.post(":id/postComment",verifyToken,
 videoController.addComment
 );
 
+router.get("video/:id",
+videoController.getVideobyId
+);
+
 
 module.exports=router

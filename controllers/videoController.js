@@ -57,7 +57,7 @@ const getVideos = async (req, res) => {
       sortOptions = { views: -1 };
   
       if (filter) {
-        query.title = { $regex: filter, $options: "i" }; // Case-insensitive search
+        query.title = { $regex: filter, $options: "i" };
       }
   
       let videos = [];
@@ -184,6 +184,22 @@ catch(error){
 }
 }
 
+const getVideobyId=async(res,req)=>{
+    try{    
+        const id=req.param.id
+
+        const video=Video.findById(id)
+
+        res.json({
+            video
+        })
+
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error", error: error });
+    }
+}
+
 // Export the controller function
 module.exports = {
     uploadVideo,
@@ -193,5 +209,6 @@ module.exports = {
     addView,
     addComment,
     getComments,
+    getVideobyId,
 };
 
