@@ -43,8 +43,12 @@ const uploadVideo = async (req, res, next) => {
 };
 
 
+
+
+
 const getVideos = async (req, res) => {
     try {
+        console.log("---- RUN getVideos function")
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 20;
         const filter = req.query.filter || null;
