@@ -15,7 +15,7 @@ app.use(cookieParser())
 app.use(cors())
 
 app.get("/", (req, res) => {
-    res.send("Hamza The Great");
+    res.send("BACKEND IS WORKING FINE");
 });
 
 app.use(express.json());
